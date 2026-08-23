@@ -121,6 +121,7 @@ export default function Library() {
   const [tab, setTab] = useState<Tab>("playlists");
   const [visitedIds, setVisitedIds] = useState<string[]>([]);
   const [progressById, setProgressById] = useState<Record<string, number>>({});
+  const [dailyOrder, setDailyOrder] = useState<string[]>([]);
   const [theme, setTheme] = useState<Theme>("light");
   const [now, setNow] = useState<Date | null>(null);
   const [quoteIndex, setQuoteIndex] = useState(0);
@@ -212,6 +213,35 @@ export default function Library() {
     tags: item.tags ?? [],
   })), []);
 
+  useEffect(() => {
+    const ids = [...allItems, ...resourceItems].map((item) => item.id);
+    const currentDate = new Date();
+    const today = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, "0")}-${String(currentDate.getDate()).padStart(2, "0")}`;
+    const saved = window.localStorage.getItem("learntube-daily-order");
+    let order: string[] | null = null;
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (parsed.date === today && Array.isArray(parsed.order) && ids.every((id) => parsed.order.includes(id))) {
+          order = parsed.order;
+        }
+      } catch {
+        window.localStorage.removeItem("learntube-daily-order");
+      }
+    }
+    if (!order) {
+      order = [...ids];
+      for (let index = order.length - 1; index > 0; index -= 1) {
+        const swapIndex = Math.floor(Math.random() * (index + 1));
+        [order[index], order[swapIndex]] = [order[swapIndex], order[index]];
+      }
+      window.localStorage.setItem("learntube-daily-order", JSON.stringify({ date: today, order }));
+    }
+    // Load or create the one display order used for this local calendar day.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setDailyOrder(order);
+  }, [allItems, resourceItems]);
+
   const continueItem = useMemo(() => {
     const id = visitedIds[0];
     return allItems.find((item) => item.id === id) ?? resourceItems.find((item) => item.id === id);
@@ -220,13 +250,16 @@ export default function Library() {
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     const source = tab === "resources" ? resourceItems : allItems;
-    return source.filter((item) => {
+    const matches = source.filter((item) => {
       const inTab = tab === "visited" ? visitedIds.includes(item.id) : tab === "resources" || item.kind === tab;
       if (!inTab || (activeCategory !== "all" && item.category !== activeCategory)) return false;
       const owner = item.kind === "resources" ? item.source : item.channel;
       return !q || [item.title, owner, ...item.tags].join(" ").toLowerCase().includes(q);
     });
-  }, [activeCategory, allItems, query, resourceItems, tab, visitedIds]);
+    return dailyOrder.length > 0
+      ? matches.sort((left, right) => dailyOrder.indexOf(left.id) - dailyOrder.indexOf(right.id))
+      : matches;
+  }, [activeCategory, allItems, dailyOrder, query, resourceItems, tab, visitedIds]);
 
   const categoryChips = useMemo(() => {
     const categories = new Set<string>();

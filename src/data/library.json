@@ -51,16 +51,6 @@
       "tags": ["electronics", "digital", "logic gates", "boolean algebra", "flip flops"]
     },
     {
-      "id": "neso-electronics-projects",
-      "title": "Electronics Projects",
-      "category": "other",
-      "url": "https://www.youtube.com/playlist?list=PLBlnK6fEyqRjdudUOryWImOBdzxg6ZGk5",
-      "firstVideoId": "gzh8ICLMXzQ",
-      "channel": "Neso Academy",
-      "featured": true,
-      "tags": ["electronics", "projects", "circuits", "components", "hardware"]
-    },
-    {
       "id": "neso-network-theory",
       "title": "Network Theory",
       "category": "other",
