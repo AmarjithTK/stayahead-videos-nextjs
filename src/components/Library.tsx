@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { type PointerEvent, useEffect, useMemo, useRef, useState } from "react";
 import { CATEGORY_LABELS, playlists, resources, thumbnailFor, videos } from "@/data/library";
 import Card, { type CardItem } from "./Card";
 import ResourceCard, { type ResourceItem } from "./ResourceCard";
@@ -87,6 +87,19 @@ function nextDailyTime(date: Date, hour: number): Date {
   return target;
 }
 
+function nextMonths(date: Date, months: number): Date {
+  const target = new Date(date);
+  target.setMonth(target.getMonth() + months);
+  return target;
+}
+
+function nextYearMarker(date: Date): [string, Date] {
+  const midYear = new Date(date.getFullYear(), 6, 1);
+  return date < midYear
+    ? ["Mid-year in", midYear]
+    : ["Next year in", new Date(date.getFullYear() + 1, 0, 1)];
+}
+
 function awarenessCountdowns(date: Date): Array<[string, Date]> {
   const hour = date.getHours();
   if (hour < 12) {
@@ -109,6 +122,7 @@ export default function Library() {
   const [quoteIndex, setQuoteIndex] = useState(0);
   const [animationVariant, setAnimationVariant] = useState(0);
   const [colorVariant, setColorVariant] = useState(0);
+  const awarenessSceneRef = useRef<HTMLDivElement>(null);
   const [showAwareness, setShowAwareness] = useState(true);
   const [isDismissingAwareness, setIsDismissingAwareness] = useState(false);
 
@@ -254,10 +268,19 @@ export default function Library() {
     document.documentElement.classList.toggle("dark", nextTheme === "dark");
   }
 
+  const [yearMarkerLabel, yearMarker] = now ? nextYearMarker(now) : ["", new Date()];
+
   function dismissAwareness() {
     if (isDismissingAwareness) return;
     setIsDismissingAwareness(true);
     window.setTimeout(() => setShowAwareness(false), 350);
+  }
+
+  function followAwarenessPointer(event: PointerEvent<HTMLDivElement>) {
+    const scene = awarenessSceneRef.current;
+    if (!scene) return;
+    scene.style.setProperty("--pointer-x", `${event.clientX}px`);
+    scene.style.setProperty("--pointer-y", `${event.clientY}px`);
   }
 
   return (
@@ -325,9 +348,10 @@ export default function Library() {
         <div
           className={`fixed inset-0 z-50 flex items-center justify-center bg-zinc-950/90 p-6 backdrop-blur-sm transition-opacity duration-300 ${isDismissingAwareness ? "opacity-0" : "animate-[awareness-in_500ms_ease-out] opacity-100"}`}
           onClick={dismissAwareness}
+          onPointerMove={followAwarenessPointer}
           role="presentation"
         >
-          <div className={`awareness-scene awareness-scene-${animationVariant} awareness-color-${colorVariant} absolute inset-0 overflow-hidden`} aria-hidden="true">
+          <div ref={awarenessSceneRef} className={`awareness-scene awareness-scene-${animationVariant} awareness-color-${colorVariant} absolute inset-0 overflow-hidden`} aria-hidden="true">
             <div className="awareness-orb awareness-orb-one" />
             <div className="awareness-orb awareness-orb-two" />
             <div className="awareness-grid" />
@@ -336,18 +360,28 @@ export default function Library() {
             <p className="text-xs font-semibold uppercase tracking-[0.28em] text-red-400">Pause. Notice. Begin.</p>
             <p className="mt-8 text-2xl font-semibold leading-tight tracking-tight sm:text-4xl">&ldquo;{awarenessQuotes[quoteIndex][0]}&rdquo;</p>
             <p className="mt-5 text-base text-zinc-300">{awarenessQuotes[quoteIndex][1]}</p>
-            <div className="mt-12 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-base text-zinc-200 sm:text-lg">
-              <span>{now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</span>
-              <span className="h-1 w-1 rounded-full bg-red-500" />
-              <span>{now.toLocaleDateString([], { weekday: "long", month: "long", day: "numeric", year: "numeric" })}</span>
-              <span className="h-1 w-1 rounded-full bg-red-500" />
-              <span>Age {ageOnDate(now)}</span>
+            <div className="mt-12 text-zinc-200">
+              <p className="text-5xl font-semibold tracking-tight sm:text-7xl">{now.toLocaleTimeString([], { hour: "numeric", minute: "2-digit", hour12: true })}</p>
+              <div className="mt-4 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-base sm:text-lg">
+                <span>{now.toLocaleDateString([], { weekday: "long", month: "long", day: "numeric", year: "numeric" })}</span>
+                <span className="h-1 w-1 rounded-full bg-red-500" />
+                <span>Age {ageOnDate(now)}</span>
+              </div>
             </div>
-            <div className="mt-5 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-zinc-300 sm:text-base">
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-sm text-zinc-300 sm:text-base">
               {awarenessCountdowns(now).map(([label, target]) => <span key={label}>{label} {formatCountdown(target.getTime() - now.getTime())}</span>)}
-              <span>Age {ageOnDate(now) + 1} in {formatCountdown(nextBirthdayFrom(now).getTime() - now.getTime())}</span>
             </div>
             <p className="mt-10 text-sm font-medium text-zinc-400 sm:text-base">Click to continue</p>
+          </div>
+          <div className="absolute bottom-6 left-6 flex gap-5 text-left text-xs text-zinc-400 sm:bottom-10 sm:left-10 sm:gap-8 sm:text-sm">
+            <span><strong className="block text-zinc-200">3 months</strong>{formatCountdown(nextMonths(now, 3).getTime() - now.getTime())}</span>
+            <span><strong className="block text-zinc-200">6 months</strong>{formatCountdown(nextMonths(now, 6).getTime() - now.getTime())}</span>
+          </div>
+          <div className="absolute bottom-6 right-6 text-right text-xs text-zinc-400 sm:bottom-10 sm:right-10 sm:text-sm">
+            <strong className="block text-zinc-200">{yearMarkerLabel}</strong>
+            <span>{formatCountdown(yearMarker.getTime() - (now?.getTime() ?? yearMarker.getTime()))}</span>
+            <strong className="mt-2 block text-zinc-200">Age {ageOnDate(now) + 1}</strong>
+            <span>{formatCountdown(nextBirthdayFrom(now).getTime() - now.getTime())}</span>
           </div>
         </div>
       )}

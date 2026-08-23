@@ -50,6 +50,15 @@ input {
   opacity: 0.18;
 }
 
+.awareness-scene::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  pointer-events: none;
+  background: radial-gradient(520px circle at var(--pointer-x, 50%) var(--pointer-y, 50%), rgba(255, 255, 255, 0.1), transparent 72%);
+  transition: background-position 120ms ease-out;
+}
+
 .awareness-orb-one {
   top: -12rem;
   left: 10%;
