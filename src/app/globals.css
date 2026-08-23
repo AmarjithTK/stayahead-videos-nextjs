@@ -29,3 +29,182 @@ input {
   --background: #0a0a0a;
   --foreground: #ededed;
 }
+
+@keyframes awareness-in {
+  from {
+    opacity: 0;
+    transform: scale(1.015);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.awareness-orb {
+  position: absolute;
+  width: 28rem;
+  height: 28rem;
+  border-radius: 9999px;
+  filter: blur(80px);
+  opacity: 0.18;
+}
+
+.awareness-orb-one {
+  top: -12rem;
+  left: 10%;
+  background: #dc2626;
+  animation: awareness-drift-one 14s ease-in-out infinite alternate;
+}
+
+.awareness-orb-two {
+  right: 5%;
+  bottom: -14rem;
+  background: #2563eb;
+  animation: awareness-drift-two 18s ease-in-out infinite alternate;
+}
+
+.awareness-grid {
+  position: absolute;
+  inset: 0;
+  opacity: 0.08;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.35) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.35) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse at center, black, transparent 72%);
+  animation: awareness-grid-drift 22s linear infinite;
+}
+
+.awareness-scene-1 .awareness-orb-one {
+  animation: awareness-pulse 8s ease-in-out infinite alternate;
+}
+
+.awareness-scene-1 .awareness-orb-two {
+  animation: awareness-pulse 11s ease-in-out infinite alternate-reverse;
+}
+
+.awareness-scene-2 .awareness-orb-one {
+  animation: awareness-orbit-one 20s linear infinite;
+}
+
+.awareness-scene-2 .awareness-orb-two {
+  animation: awareness-orbit-two 24s linear infinite;
+}
+
+.awareness-scene-3 .awareness-orb-one {
+  animation: awareness-sway 9s ease-in-out infinite alternate;
+}
+
+.awareness-scene-3 .awareness-orb-two {
+  animation: awareness-sway-reverse 13s ease-in-out infinite alternate;
+}
+
+.awareness-scene-4 .awareness-orb-one {
+  animation: awareness-breathe 7s ease-in-out infinite;
+}
+
+.awareness-scene-4 .awareness-orb-two {
+  animation: awareness-breathe 9s ease-in-out infinite reverse;
+}
+
+.awareness-scene-5 .awareness-orb-one {
+  animation: awareness-diagonal 16s ease-in-out infinite alternate;
+}
+
+.awareness-scene-5 .awareness-orb-two {
+  animation: awareness-diagonal-reverse 19s ease-in-out infinite alternate;
+}
+
+.awareness-scene-6 .awareness-orb-one {
+  animation: awareness-zoom 12s ease-in-out infinite alternate;
+}
+
+.awareness-scene-6 .awareness-orb-two {
+  animation: awareness-zoom-reverse 15s ease-in-out infinite alternate;
+}
+
+.awareness-scene-7 .awareness-grid {
+  animation: awareness-grid-drift-fast 10s linear infinite;
+}
+
+.awareness-color-1 .awareness-orb-one { background: #7c3aed; }
+.awareness-color-1 .awareness-orb-two { background: #ec4899; }
+.awareness-color-2 .awareness-orb-one { background: #0891b2; }
+.awareness-color-2 .awareness-orb-two { background: #2563eb; }
+.awareness-color-3 .awareness-orb-one { background: #16a34a; }
+.awareness-color-3 .awareness-orb-two { background: #eab308; }
+.awareness-color-4 .awareness-orb-one { background: #f97316; }
+.awareness-color-4 .awareness-orb-two { background: #dc2626; }
+.awareness-color-5 .awareness-orb-one { background: #db2777; }
+.awareness-color-5 .awareness-orb-two { background: #7c3aed; }
+.awareness-color-6 .awareness-orb-one { background: #14b8a6; }
+.awareness-color-6 .awareness-orb-two { background: #22c55e; }
+.awareness-color-7 .awareness-orb-one { background: #f59e0b; }
+.awareness-color-7 .awareness-orb-two { background: #f43f5e; }
+.awareness-color-8 .awareness-orb-one { background: #38bdf8; }
+.awareness-color-8 .awareness-orb-two { background: #a78bfa; }
+.awareness-color-9 .awareness-orb-one { background: #84cc16; }
+.awareness-color-9 .awareness-orb-two { background: #06b6d4; }
+
+@keyframes awareness-pulse {
+  to { opacity: 0.34; transform: scale(1.3); }
+}
+
+@keyframes awareness-orbit-one {
+  to { transform: translate(45vw, 25vh) rotate(360deg); }
+}
+
+@keyframes awareness-orbit-two {
+  to { transform: translate(-35vw, -20vh) rotate(-360deg); }
+}
+
+@keyframes awareness-sway {
+  to { transform: translate(22vw, -10vh) rotate(18deg); }
+}
+
+@keyframes awareness-sway-reverse {
+  to { transform: translate(-18vw, 12vh) rotate(-24deg); }
+}
+
+@keyframes awareness-breathe {
+  0%, 100% { opacity: 0.1; transform: scale(0.8); }
+  50% { opacity: 0.3; transform: scale(1.35); }
+}
+
+@keyframes awareness-diagonal {
+  to { transform: translate(30vw, 30vh) scale(0.75); }
+}
+
+@keyframes awareness-diagonal-reverse {
+  to { transform: translate(-30vw, -25vh) scale(1.2); }
+}
+
+@keyframes awareness-zoom {
+  to { transform: translate(5vw, 8vh) scale(1.6); }
+}
+
+@keyframes awareness-zoom-reverse {
+  to { transform: translate(-8vw, -6vh) scale(0.65); }
+}
+
+@keyframes awareness-grid-drift-fast {
+  to { background-position: 96px 96px; }
+}
+
+@keyframes awareness-drift-one {
+  to { transform: translate(12vw, 8vh) scale(1.18); }
+}
+
+@keyframes awareness-drift-two {
+  to { transform: translate(-10vw, -8vh) scale(0.84); }
+}
+
+@keyframes awareness-grid-drift {
+  to { background-position: 48px 48px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .awareness-orb,
+  .awareness-grid {
+    animation: none;
+  }
+}

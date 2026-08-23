@@ -15,6 +15,71 @@ const navItems: Array<[Tab, string, string]> = [
   ["resources", "Resources", "M5 4.5h10a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1ZM7 8h6M7 11h4"],
 ];
 
+const awarenessQuotes = [
+  ["Nothing in life is to be feared, it is only to be understood.", "Marie Curie"],
+  ["The important thing is not to stop questioning.", "Albert Einstein"],
+  ["What we know is a drop, what we don't know is an ocean.", "Isaac Newton"],
+  ["The first principle is that you must not fool yourself, and you are the easiest person to fool.", "Richard Feynman"],
+  ["Somewhere, something incredible is waiting to be known.", "Carl Sagan"],
+  ["The good thing about science is that it's true whether or not you believe in it.", "Neil deGrasse Tyson"],
+  ["The man of science has learned to believe in justification, not by faith, but by verification.", "Thomas Huxley"],
+  ["The scientist is not a person who gives the right answers, he is one who asks the right questions.", "Claude Levi-Strauss"],
+  ["We can only see a short distance ahead, but we can see plenty there that needs to be done.", "Alan Turing"],
+  ["The most dangerous phrase in the language is, 'We've always done it this way.'", "Grace Hopper"],
+  ["The only way to learn a new programming language is by writing programs in it.", "Brian Kernighan"],
+  ["Computer science is no more about computers than astronomy is about telescopes.", "Edsger Dijkstra"],
+  ["An essential aspect of creativity is not being afraid to fail.", "Edwin Land"],
+  ["The best way to predict the future is to invent it.", "Alan Kay"],
+  ["The future is already here. It is just not evenly distributed.", "William Gibson"],
+  ["The people who are crazy enough to think they can change the world are the ones who do.", "Steve Jobs"],
+  ["Your work is going to fill a large part of your life, and the only way to be truly satisfied is to do great work.", "Steve Jobs"],
+  ["If you do what you've always done, you'll get what you've always gotten.", "Tony Robbins"],
+  ["Ideas are easy. Implementation is hard.", "Guy Kawasaki"],
+  ["The way to get started is to quit talking and begin doing.", "Walt Disney"],
+  ["The best vision is insight.", "Malcolm Forbes"],
+  ["The value of an idea lies in the using of it.", "Thomas Edison"],
+  ["The present is theirs; the future, for which I really worked, is mine.", "Nikola Tesla"],
+  ["The future belongs to those who prepare for it today.", "Malcolm X"],
+  ["The mind is not a vessel to be filled, but a fire to be kindled.", "Plutarch"],
+  ["We are what we repeatedly do. Excellence, then, is not an act, but a habit.", "Aristotle"],
+  ["The impediment to action advances action. What stands in the way becomes the way.", "Marcus Aurelius"],
+  ["Luck is what happens when preparation meets opportunity.", "Seneca"],
+  ["It is not that we have a short time to live, but that we waste a lot of it.", "Seneca"],
+  ["The journey of a thousand miles begins with one step.", "Lao Tzu"],
+  ["The man who moves a mountain begins by carrying away small stones.", "Confucius"],
+  ["He who learns but does not think, is lost. He who thinks but does not learn is in great danger.", "Confucius"],
+  ["The future depends on what you do today.", "Simone Weil"],
+  ["The secret of getting ahead is getting started.", "Mark Twain"],
+  ["A person who never made a mistake never tried anything new.", "Albert Einstein"],
+  ["Great things are done by a series of small things brought together.", "Vincent van Gogh"],
+  ["It is never too late to be what you might have been.", "George Eliot"],
+  ["Nothing will work unless you do.", "Maya Angelou"],
+];
+
+function ageOnDate(date: Date): number {
+  const birthday = new Date(2002, 9, 13);
+  let age = date.getFullYear() - birthday.getFullYear();
+  const hasHadBirthday = date.getMonth() > birthday.getMonth() ||
+    (date.getMonth() === birthday.getMonth() && date.getDate() >= birthday.getDate());
+  if (!hasHadBirthday) age -= 1;
+  return age;
+}
+
+function nextBirthdayFrom(date: Date): Date {
+  const birthday = new Date(date.getFullYear(), 9, 13);
+  if (birthday <= date) birthday.setFullYear(birthday.getFullYear() + 1);
+  return birthday;
+}
+
+function formatCountdown(milliseconds: number): string {
+  const totalSeconds = Math.max(0, Math.floor(milliseconds / 1000));
+  const days = Math.floor(totalSeconds / 86400);
+  const hours = Math.floor((totalSeconds % 86400) / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+  return `${days ? `${days}d ` : ""}${String(hours).padStart(2, "0")}h ${String(minutes).padStart(2, "0")}m ${String(seconds).padStart(2, "0")}s`;
+}
+
 export default function Library() {
   const [query, setQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState("all");
@@ -22,6 +87,12 @@ export default function Library() {
   const [visitedIds, setVisitedIds] = useState<string[]>([]);
   const [progressById, setProgressById] = useState<Record<string, number>>({});
   const [theme, setTheme] = useState<Theme>("light");
+  const [now, setNow] = useState<Date | null>(null);
+  const [quoteIndex, setQuoteIndex] = useState(0);
+  const [animationVariant, setAnimationVariant] = useState(0);
+  const [colorVariant, setColorVariant] = useState(0);
+  const [showAwareness, setShowAwareness] = useState(true);
+  const [isDismissingAwareness, setIsDismissingAwareness] = useState(false);
 
   useEffect(() => {
     const savedTheme = window.localStorage.getItem("learntube-theme");
@@ -30,6 +101,35 @@ export default function Library() {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setTheme(nextTheme);
     document.documentElement.classList.toggle("dark", nextTheme === "dark");
+  }, []);
+
+  useEffect(() => {
+    // Keep the clock client-only so its server-rendered markup stays stable.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setNow(new Date());
+    const savedQuoteHistory = window.localStorage.getItem("learntube-quote-history");
+    let seenQuotes: number[] = [];
+    try {
+      const parsed = savedQuoteHistory ? JSON.parse(savedQuoteHistory) : [];
+      if (Array.isArray(parsed)) seenQuotes = parsed.filter((index): index is number => Number.isInteger(index));
+    } catch {
+      window.localStorage.removeItem("learntube-quote-history");
+    }
+    const availableQuotes = awarenessQuotes
+      .map((_, index) => index)
+      .filter((index) => !seenQuotes.includes(index));
+    const pool = availableQuotes.length > 0 ? availableQuotes : awarenessQuotes.map((_, index) => index);
+    const selectedQuote = pool[Math.floor(Math.random() * pool.length)];
+    const nextHistory = availableQuotes.length > 0 ? [...seenQuotes, selectedQuote] : [selectedQuote];
+    window.localStorage.setItem("learntube-quote-history", JSON.stringify(nextHistory));
+    setAnimationVariant(Math.floor(Math.random() * 8));
+    setColorVariant(Math.floor(Math.random() * 10));
+    // Select one quote for this visit; it must not rotate while the overlay is open.
+    setQuoteIndex(selectedQuote);
+    const clock = window.setInterval(() => setNow(new Date()), 1000);
+    return () => {
+      window.clearInterval(clock);
+    };
   }, []);
 
   useEffect(() => {
@@ -136,6 +236,12 @@ export default function Library() {
     document.documentElement.classList.toggle("dark", nextTheme === "dark");
   }
 
+  function dismissAwareness() {
+    if (isDismissingAwareness) return;
+    setIsDismissingAwareness(true);
+    window.setTimeout(() => setShowAwareness(false), 350);
+  }
+
   return (
     <main className="min-h-screen w-full bg-white text-zinc-900 dark:bg-[#0f0f0f] dark:text-zinc-100">
       <header className="sticky top-0 z-30 h-14 border-b border-zinc-200 bg-white/95 backdrop-blur dark:border-zinc-800 dark:bg-[#0f0f0f]/95">
@@ -196,6 +302,37 @@ export default function Library() {
       )}
 
       {filtered.length > 0 ? <div className="mx-auto w-full max-w-[1640px] px-4 pt-6 sm:px-6 lg:ml-60 lg:w-[calc(100%-15rem)] lg:px-6 xl:px-8"><div className={tab === "resources" ? "grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6" : "grid grid-cols-1 gap-x-5 gap-y-9 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"}>{filtered.map((item) => item.kind === "resources" ? <ResourceCard key={`resource-${item.id}`} item={item} onVisit={() => markVisited(item.id)} /> : <Card key={`${item.kind}-${item.id}`} item={item} onVisit={() => markVisited(item.id)} />)}</div></div> : <div className="flex flex-col items-center gap-3 py-24 text-center"><p className="text-lg font-medium">Nothing here</p><button type="button" onClick={() => { setQuery(""); setActiveCategory("all"); }} className="rounded-full bg-zinc-900 px-4 py-2 text-sm font-medium text-white dark:bg-zinc-100 dark:text-zinc-900">Clear filters</button></div>}
+
+      {showAwareness && now && (
+        <div
+          className={`fixed inset-0 z-50 flex items-center justify-center bg-zinc-950/90 p-6 backdrop-blur-sm transition-opacity duration-300 ${isDismissingAwareness ? "opacity-0" : "animate-[awareness-in_500ms_ease-out] opacity-100"}`}
+          onClick={dismissAwareness}
+          role="presentation"
+        >
+          <div className={`awareness-scene awareness-scene-${animationVariant} awareness-color-${colorVariant} absolute inset-0 overflow-hidden`} aria-hidden="true">
+            <div className="awareness-orb awareness-orb-one" />
+            <div className="awareness-orb awareness-orb-two" />
+            <div className="awareness-grid" />
+          </div>
+          <div className="pointer-events-none relative w-full max-w-2xl text-center text-white">
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-red-400">Pause. Notice. Begin.</p>
+            <p className="mt-8 text-2xl font-semibold leading-tight tracking-tight sm:text-4xl">&ldquo;{awarenessQuotes[quoteIndex][0]}&rdquo;</p>
+            <p className="mt-5 text-base text-zinc-300">{awarenessQuotes[quoteIndex][1]}</p>
+            <div className="mt-12 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-base text-zinc-200 sm:text-lg">
+              <span>{now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</span>
+              <span className="h-1 w-1 rounded-full bg-red-500" />
+              <span>{now.toLocaleDateString([], { weekday: "long", month: "long", day: "numeric", year: "numeric" })}</span>
+              <span className="h-1 w-1 rounded-full bg-red-500" />
+              <span>Age {ageOnDate(now)}</span>
+            </div>
+            <div className="mt-5 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-zinc-300 sm:text-base">
+              <span>Midnight in {formatCountdown(new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1).getTime() - now.getTime())}</span>
+              <span>Age {ageOnDate(now) + 1} in {formatCountdown(nextBirthdayFrom(now).getTime() - now.getTime())}</span>
+            </div>
+            <p className="mt-10 text-sm font-medium text-zinc-400 sm:text-base">Click to continue</p>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
