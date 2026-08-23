@@ -80,6 +80,24 @@ function formatCountdown(milliseconds: number): string {
   return `${days ? `${days}d ` : ""}${String(hours).padStart(2, "0")}h ${String(minutes).padStart(2, "0")}m ${String(seconds).padStart(2, "0")}s`;
 }
 
+function nextDailyTime(date: Date, hour: number): Date {
+  const target = new Date(date.getFullYear(), date.getMonth(), date.getDate(), hour % 24);
+  if (hour === 24) target.setDate(target.getDate() + 1);
+  if (target <= date) target.setDate(target.getDate() + 1);
+  return target;
+}
+
+function awarenessCountdowns(date: Date): Array<[string, Date]> {
+  const hour = date.getHours();
+  if (hour < 12) {
+    return [["Lunch in", nextDailyTime(date, 12)], ["Evening in", nextDailyTime(date, 18)]];
+  }
+  if (hour < 18) {
+    return [["Evening in", nextDailyTime(date, 18)], ["Midnight in", nextDailyTime(date, 24)]];
+  }
+  return [["Midnight in", nextDailyTime(date, 24)], ["Morning in", nextDailyTime(date, 8)]];
+}
+
 export default function Library() {
   const [query, setQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState("all");
@@ -326,7 +344,7 @@ export default function Library() {
               <span>Age {ageOnDate(now)}</span>
             </div>
             <div className="mt-5 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-zinc-300 sm:text-base">
-              <span>Midnight in {formatCountdown(new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1).getTime() - now.getTime())}</span>
+              {awarenessCountdowns(now).map(([label, target]) => <span key={label}>{label} {formatCountdown(target.getTime() - now.getTime())}</span>)}
               <span>Age {ageOnDate(now) + 1} in {formatCountdown(nextBirthdayFrom(now).getTime() - now.getTime())}</span>
             </div>
             <p className="mt-10 text-sm font-medium text-zinc-400 sm:text-base">Click to continue</p>
