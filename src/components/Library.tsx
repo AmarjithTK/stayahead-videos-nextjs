@@ -20,6 +20,7 @@ export default function Library() {
   const [activeCategory, setActiveCategory] = useState("all");
   const [tab, setTab] = useState<Tab>("playlists");
   const [visitedIds, setVisitedIds] = useState<string[]>([]);
+  const [progressById, setProgressById] = useState<Record<string, number>>({});
   const [theme, setTheme] = useState<Theme>("light");
 
   useEffect(() => {
@@ -29,6 +30,20 @@ export default function Library() {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setTheme(nextTheme);
     document.documentElement.classList.toggle("dark", nextTheme === "dark");
+  }, []);
+
+  useEffect(() => {
+    const savedProgress = window.localStorage.getItem("learntube-progress");
+    if (!savedProgress) return;
+    try {
+      const progress = JSON.parse(savedProgress);
+      if (progress && typeof progress === "object" && !Array.isArray(progress)) {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setProgressById(progress);
+      }
+    } catch {
+      window.localStorage.removeItem("learntube-progress");
+    }
   }, []);
 
   useEffect(() => {
@@ -61,6 +76,11 @@ export default function Library() {
     tags: item.tags ?? [],
   })), []);
 
+  const continueItem = useMemo(() => {
+    const id = visitedIds[0];
+    return allItems.find((item) => item.id === id) ?? resourceItems.find((item) => item.id === id);
+  }, [allItems, resourceItems, visitedIds]);
+
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     const source = tab === "resources" ? resourceItems : allItems;
@@ -91,6 +111,20 @@ export default function Library() {
     setVisitedIds((current) => {
       const next = [id, ...current.filter((visitedId) => visitedId !== id)];
       window.localStorage.setItem("learntube-visited", JSON.stringify(next));
+      return next;
+    });
+    setProgressById((current) => {
+      if (current[id] !== undefined) return current;
+      const next = { ...current, [id]: 10 };
+      window.localStorage.setItem("learntube-progress", JSON.stringify(next));
+      return next;
+    });
+  }
+
+  function updateProgress(id: string, value: number) {
+    setProgressById((current) => {
+      const next = { ...current, [id]: value };
+      window.localStorage.setItem("learntube-progress", JSON.stringify(next));
       return next;
     });
   }
@@ -144,6 +178,22 @@ export default function Library() {
           {categoryChips.map((category) => <button key={category} type="button" onClick={() => setActiveCategory(category)} className={`shrink-0 rounded-lg px-3 py-1.5 text-sm font-medium ${activeCategory === category ? "bg-zinc-900 text-white dark:bg-white dark:text-zinc-900" : "bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700"}`}>{CATEGORY_LABELS[category as keyof typeof CATEGORY_LABELS]}</button>)}
         </div>
       </div>
+
+      {continueItem && (
+        <div className="mx-auto mb-1 mt-5 w-full max-w-[1640px] px-4 sm:px-6 lg:ml-60 lg:w-[calc(100%-15rem)] lg:px-6 xl:px-8">
+          <div className="flex flex-col gap-3 rounded-xl border border-zinc-200 bg-zinc-50 p-4 sm:flex-row sm:items-center dark:border-zinc-800 dark:bg-[#181818]">
+            <div className="min-w-0 flex-1">
+              <p className="text-xs font-semibold uppercase tracking-wide text-red-600">Continue learning</p>
+              <p className="mt-1 truncate text-sm font-semibold">{continueItem.title}</p>
+              <div className="mt-3 h-1.5 max-w-md overflow-hidden rounded-full bg-zinc-200 dark:bg-zinc-700"><div className="h-full rounded-full bg-red-600" style={{ width: `${progressById[continueItem.id] ?? 0}%` }} /></div>
+            </div>
+            <div className="flex shrink-0 items-center gap-2">
+              {[25, 50, 75, 100].map((value) => <button key={value} type="button" onClick={() => updateProgress(continueItem.id, value)} className={`rounded-md px-2 py-1 text-[11px] font-medium ${progressById[continueItem.id] === value ? "bg-red-600 text-white" : "bg-white text-zinc-500 hover:bg-zinc-200 dark:bg-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-700"}`}>{value}%</button>)}
+              <a href={continueItem.url} target="_blank" rel="noopener noreferrer" onClick={() => markVisited(continueItem.id)} className="rounded-full bg-zinc-900 px-4 py-2 text-xs font-semibold text-white hover:bg-zinc-700 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-white">Continue</a>
+            </div>
+          </div>
+        </div>
+      )}
 
       {filtered.length > 0 ? <div className="mx-auto w-full max-w-[1640px] px-4 pt-6 sm:px-6 lg:ml-60 lg:w-[calc(100%-15rem)] lg:px-6 xl:px-8"><div className={tab === "resources" ? "grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6" : "grid grid-cols-1 gap-x-5 gap-y-9 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"}>{filtered.map((item) => item.kind === "resources" ? <ResourceCard key={`resource-${item.id}`} item={item} onVisit={() => markVisited(item.id)} /> : <Card key={`${item.kind}-${item.id}`} item={item} onVisit={() => markVisited(item.id)} />)}</div></div> : <div className="flex flex-col items-center gap-3 py-24 text-center"><p className="text-lg font-medium">Nothing here</p><button type="button" onClick={() => { setQuery(""); setActiveCategory("all"); }} className="rounded-full bg-zinc-900 px-4 py-2 text-sm font-medium text-white dark:bg-zinc-100 dark:text-zinc-900">Clear filters</button></div>}
     </main>

@@ -21,8 +21,15 @@ export default function ResourceCard({ item, onVisit }: { item: ResourceItem; on
       className="group flex min-h-44 flex-col rounded-xl border border-zinc-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:border-zinc-300 hover:shadow-md dark:border-zinc-800 dark:bg-[#181818] dark:hover:border-zinc-700"
     >
       <div className="flex items-start justify-between gap-3">
-        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-zinc-900 text-xs font-bold uppercase text-white dark:bg-zinc-100 dark:text-zinc-900">
+        <span className="relative flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-zinc-100 text-xs font-bold uppercase text-zinc-700 dark:bg-zinc-800 dark:text-zinc-200">
           {item.source.slice(0, 2)}
+          {/* Google serves a consistent favicon for links with unusual subdomains. */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={`https://www.google.com/s2/favicons?domain_url=${encodeURIComponent(item.url)}&sz=64`}
+            alt=""
+            className="absolute inset-1 h-7 w-7 rounded-md bg-white object-contain"
+          />
         </span>
         <span className="text-lg leading-none text-zinc-400 transition group-hover:text-red-600" aria-hidden="true">↗</span>
       </div>
