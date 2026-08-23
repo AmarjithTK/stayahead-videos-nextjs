@@ -135,6 +135,22 @@ input {
   animation: awareness-grid-drift-fast 10s linear infinite;
 }
 
+.awareness-scene-8 .awareness-orb-one { animation: awareness-sweep 17s ease-in-out infinite alternate; }
+.awareness-scene-8 .awareness-orb-two { animation: awareness-sweep-reverse 21s ease-in-out infinite alternate; }
+.awareness-scene-9 .awareness-orb-one { animation: awareness-flicker 6s ease-in-out infinite; }
+.awareness-scene-9 .awareness-orb-two { animation: awareness-flicker 9s ease-in-out infinite reverse; }
+.awareness-scene-10 .awareness-orb-one { animation: awareness-spiral 26s linear infinite; }
+.awareness-scene-10 .awareness-orb-two { animation: awareness-spiral-reverse 30s linear infinite; }
+.awareness-scene-11 .awareness-orb-one { animation: awareness-rise 15s ease-in-out infinite alternate; }
+.awareness-scene-11 .awareness-orb-two { animation: awareness-rise-reverse 18s ease-in-out infinite alternate; }
+.awareness-scene-12 .awareness-orb-one { animation: awareness-swing 12s ease-in-out infinite alternate; }
+.awareness-scene-12 .awareness-orb-two { animation: awareness-swing-reverse 16s ease-in-out infinite alternate; }
+.awareness-scene-13 .awareness-orb-one { animation: awareness-expand 14s ease-in-out infinite alternate; }
+.awareness-scene-13 .awareness-orb-two { animation: awareness-contract 18s ease-in-out infinite alternate; }
+.awareness-scene-14 .awareness-orb-one { animation: awareness-cross 20s ease-in-out infinite alternate; }
+.awareness-scene-14 .awareness-orb-two { animation: awareness-cross-reverse 23s ease-in-out infinite alternate; }
+.awareness-scene-15 .awareness-grid { animation: awareness-grid-drift-slow 36s linear infinite; }
+
 .awareness-color-1 .awareness-orb-one { background: #7c3aed; }
 .awareness-color-1 .awareness-orb-two { background: #ec4899; }
 .awareness-color-2 .awareness-orb-one { background: #0891b2; }
@@ -153,6 +169,26 @@ input {
 .awareness-color-8 .awareness-orb-two { background: #a78bfa; }
 .awareness-color-9 .awareness-orb-one { background: #84cc16; }
 .awareness-color-9 .awareness-orb-two { background: #06b6d4; }
+.awareness-color-10 .awareness-orb-one { background: #be123c; }
+.awareness-color-10 .awareness-orb-two { background: #fb7185; }
+.awareness-color-11 .awareness-orb-one { background: #4338ca; }
+.awareness-color-11 .awareness-orb-two { background: #2dd4bf; }
+.awareness-color-12 .awareness-orb-one { background: #a16207; }
+.awareness-color-12 .awareness-orb-two { background: #facc15; }
+.awareness-color-13 .awareness-orb-one { background: #0f766e; }
+.awareness-color-13 .awareness-orb-two { background: #5eead4; }
+.awareness-color-14 .awareness-orb-one { background: #c026d3; }
+.awareness-color-14 .awareness-orb-two { background: #f0abfc; }
+.awareness-color-15 .awareness-orb-one { background: #0369a1; }
+.awareness-color-15 .awareness-orb-two { background: #67e8f9; }
+.awareness-color-16 .awareness-orb-one { background: #4d7c0f; }
+.awareness-color-16 .awareness-orb-two { background: #bef264; }
+.awareness-color-17 .awareness-orb-one { background: #9f1239; }
+.awareness-color-17 .awareness-orb-two { background: #fdba74; }
+.awareness-color-18 .awareness-orb-one { background: #1d4ed8; }
+.awareness-color-18 .awareness-orb-two { background: #c084fc; }
+.awareness-color-19 .awareness-orb-one { background: #15803d; }
+.awareness-color-19 .awareness-orb-two { background: #fda4af; }
 
 @keyframes awareness-pulse {
   to { opacity: 0.34; transform: scale(1.3); }
@@ -198,6 +234,21 @@ input {
 @keyframes awareness-grid-drift-fast {
   to { background-position: 96px 96px; }
 }
+
+@keyframes awareness-sweep { to { transform: translate(36vw, 5vh) rotate(28deg); } }
+@keyframes awareness-sweep-reverse { to { transform: translate(-34vw, -4vh) rotate(-30deg); } }
+@keyframes awareness-flicker { 0%, 100% { opacity: 0.1; } 50% { opacity: 0.3; } }
+@keyframes awareness-spiral { to { transform: translate(28vw, 18vh) rotate(720deg) scale(0.9); } }
+@keyframes awareness-spiral-reverse { to { transform: translate(-24vw, -20vh) rotate(-720deg) scale(1.15); } }
+@keyframes awareness-rise { to { transform: translate(12vw, -32vh) scale(1.25); } }
+@keyframes awareness-rise-reverse { to { transform: translate(-14vw, 28vh) scale(0.8); } }
+@keyframes awareness-swing { to { transform: translate(24vw, 6vh) rotate(-35deg); } }
+@keyframes awareness-swing-reverse { to { transform: translate(-22vw, -8vh) rotate(35deg); } }
+@keyframes awareness-expand { to { transform: scale(1.7) translate(4vw, 4vh); } }
+@keyframes awareness-contract { to { transform: scale(0.6) translate(-5vw, -4vh); } }
+@keyframes awareness-cross { to { transform: translate(42vw, -22vh); } }
+@keyframes awareness-cross-reverse { to { transform: translate(-42vw, 20vh); } }
+@keyframes awareness-grid-drift-slow { to { background-position: -48px -48px; } }
 
 @keyframes awareness-drift-one {
   to { transform: translate(12vw, 8vh) scale(1.18); }

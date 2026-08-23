@@ -54,6 +54,100 @@ const awarenessQuotes = [
   ["Great things are done by a series of small things brought together.", "Vincent van Gogh"],
   ["It is never too late to be what you might have been.", "George Eliot"],
   ["Nothing will work unless you do.", "Maya Angelou"],
+  ["Science is the acceptance of what works and the rejection of what does not. That requires more courage than we might think.", "Jacob Bronowski"],
+  ["The only person you are destined to become is the person you decide to be.", "Ralph Waldo Emerson"],
+  ["A man who dares to waste one hour of time has not discovered the value of life.", "Charles Darwin"],
+  ["Nothing is too wonderful to be true if it be consistent with the laws of nature.", "Michael Faraday"],
+  ["The greatest ideas are the simplest.", "William of Ockham"],
+  ["The true method of knowledge is experiment.", "William Blake"],
+  ["The whole of science is nothing more than a refinement of everyday thinking.", "Albert Einstein"],
+  ["We cannot solve problems with the same thinking we used when we created them.", "Albert Einstein"],
+  ["The measure of intelligence is the ability to change.", "Albert Einstein"],
+  ["No great discovery was ever made without a bold guess.", "Isaac Newton"],
+  ["If I have seen further it is by standing on the shoulders of giants.", "Isaac Newton"],
+  ["The universe is under no obligation to make sense to you.", "Neil deGrasse Tyson"],
+  ["The cosmos is within us. We are made of star-stuff.", "Carl Sagan"],
+  ["We are an impossible way of achieving the impossible.", "Ray Bradbury"],
+  ["The important thing is to never stop questioning.", "Richard Feynman"],
+  ["I would rather have questions that can't be answered than answers that can't be questioned.", "Richard Feynman"],
+  ["The opposite of a correct statement is a false statement. The opposite of a profound truth may well be another profound truth.", "Niels Bohr"],
+  ["Not only is the Universe stranger than we think, it is stranger than we can think.", "Werner Heisenberg"],
+  ["An expert is a person who has made all the mistakes that can be made in a very narrow field.", "Niels Bohr"],
+  ["Theories are nets: only he who casts will catch.", "Novalis"],
+  ["The good thing about science is that it's true whether or not you believe in it.", "Neil deGrasse Tyson"],
+  ["The first duty of a revolutionary is to get away with it.", "Abbie Hoffman"],
+  ["The computer was born to solve problems that did not exist before.", "Bill Gates"],
+  ["Software is a great combination of artistry and engineering.", "Bill Gates"],
+  ["Measuring programming progress by lines of code is like measuring aircraft building progress by weight.", "Bill Gates"],
+  ["The most important aspect of software development is to be clear about what you are trying to build.", "Bjarne Stroustrup"],
+  ["Premature optimization is the root of all evil.", "Donald Knuth"],
+  ["Simplicity is the soul of efficiency.", "Austin Freeman"],
+  ["A language that doesn't affect the way you think about programming is not worth knowing.", "Alan Perlis"],
+  ["Programs must be written for people to read, and only incidentally for machines to execute.", "Harold Abelson"],
+  ["The function of good software is to make the complex appear to be simple.", "Grady Booch"],
+  ["Any fool can write code that a computer can understand. Good programmers write code that humans can understand.", "Martin Fowler"],
+  ["The best error message is the one that never shows up.", "Thomas Fuchs"],
+  ["First, solve the problem. Then, write the code.", "John Johnson"],
+  ["The only way to go fast is to go well.", "Robert C. Martin"],
+  ["You can't manage what you can't measure.", "Peter Drucker"],
+  ["The purpose of computing is insight, not numbers.", "Richard Hamming"],
+  ["The digital revolution is far more significant than the invention of writing or even of printing.", "Douglas Engelbart"],
+  ["The future is something which everyone reaches at the rate of sixty minutes an hour.", "C.S. Lewis"],
+  ["The reasonable man adapts himself to the world; the unreasonable one persists in trying to adapt the world to himself.", "George Bernard Shaw"],
+  ["The only thing that interferes with my learning is my education.", "Albert Einstein"],
+  ["I have no special talent. I am only passionately curious.", "Albert Einstein"],
+  ["Education is what remains after one has forgotten what one has learned in school.", "Albert Einstein"],
+  ["The roots of education are bitter, but the fruit is sweet.", "Aristotle"],
+  ["The direction in which education starts a man will determine his future.", "Plato"],
+  ["He who asks a question is a fool for five minutes; he who does not ask remains a fool forever.", "Confucius"],
+  ["We learn more by looking for the answer to a question and not finding it than we do from learning the answer itself.", "Lloyd Alexander"],
+  ["The only true wisdom is in knowing you know nothing.", "Socrates"],
+  ["Knowing yourself is the beginning of all wisdom.", "Aristotle"],
+  ["The unexamined life is not worth living.", "Socrates"],
+  ["He who has a why to live can bear almost any how.", "Friedrich Nietzsche"],
+  ["That which does not kill us makes us stronger.", "Friedrich Nietzsche"],
+  ["Become who you are.", "Friedrich Nietzsche"],
+  ["No man is free who is not master of himself.", "Epictetus"],
+  ["We suffer more often in imagination than in reality.", "Seneca"],
+  ["Difficulties strengthen the mind, as labor does the body.", "Seneca"],
+  ["Waste no more time arguing about what a good man should be. Be one.", "Marcus Aurelius"],
+  ["The happiness of your life depends upon the quality of your thoughts.", "Marcus Aurelius"],
+  ["If you are irritated by every rub, how will your mirror be polished?", "Rumi"],
+  ["What you seek is seeking you.", "Rumi"],
+  ["The wound is the place where the Light enters you.", "Rumi"],
+  ["Do not fear going forward slowly; fear only to stand still.", "Chinese proverb"],
+  ["A journey is best measured in friends, rather than miles.", "Tim Cahill"],
+  ["The future belongs to those who believe in the beauty of their dreams.", "Eleanor Roosevelt"],
+  ["Do one thing every day that scares you.", "Eleanor Roosevelt"],
+  ["The question isn't who is going to let me; it's who is going to stop me.", "Ayn Rand"],
+  ["The best revenge is to be unlike him who performed the injury.", "Marcus Aurelius"],
+  ["A goal without a plan is just a wish.", "Antoine de Saint-Exupery"],
+  ["The future depends entirely on what each of us does every day.", "Gloria Steinem"],
+  ["Do not go where the path may lead, go instead where there is no path and leave a trail.", "Ralph Waldo Emerson"],
+  ["What you do speaks so loudly that I cannot hear what you say.", "Ralph Waldo Emerson"],
+  ["The only person you are destined to become is the person you decide to be.", "Ralph Waldo Emerson"],
+  ["Everything you've ever wanted is on the other side of fear.", "George Addair"],
+  ["Start where you are. Use what you have. Do what you can.", "Arthur Ashe"],
+  ["Success is not final, failure is not fatal: it is the courage to continue that counts.", "Winston Churchill"],
+  ["We generate fears while we sit. We overcome them by action.", "Dr. Henry Link"],
+  ["You are never too old to set another goal or to dream a new dream.", "C.S. Lewis"],
+  ["What we achieve inwardly will change outer reality.", "Plutarch"],
+  ["The cave you fear to enter holds the treasure you seek.", "Joseph Campbell"],
+  ["A creative man is motivated by the desire to achieve, not by the desire to beat others.", "Ayn Rand"],
+  ["The desire to reach for the stars is ambitious. The desire to reach hearts is wise.", "Maya Angelou"],
+  ["Nothing can dim the light that shines from within.", "Maya Angelou"],
+  ["You can't use up creativity. The more you use, the more you have.", "Maya Angelou"],
+  ["The power of imagination makes us infinite.", "John Muir"],
+  ["And into the forest I go, to lose my mind and find my soul.", "John Muir"],
+  ["The mountains are calling and I must go.", "John Muir"],
+  ["The future is not something we enter. The future is something we create.", "Leonard I. Sweet"],
+  ["The best time to plant a tree was 20 years ago. The second best time is now.", "Chinese proverb"],
+  ["You have power over your mind - not outside events. Realize this, and you will find strength.", "Marcus Aurelius"],
+  ["If it matters to you, you will find a way.", "Charlie Gilkey"],
+  ["You don't have to see the whole staircase, just take the first step.", "Martin Luther King Jr."],
+  ["Faith is taking the first step even when you don't see the whole staircase.", "Martin Luther King Jr."],
+  ["The time is always right to do what is right.", "Martin Luther King Jr."],
+  ["We must use time creatively, in the knowledge that the time is always ripe to do right.", "Martin Luther King Jr."],
 ];
 
 function ageOnDate(date: Date): number {
@@ -159,8 +253,8 @@ export default function Library() {
     const selectedQuote = pool[Math.floor(Math.random() * pool.length)];
     const nextHistory = availableQuotes.length > 0 ? [...seenQuotes, selectedQuote] : [selectedQuote];
     window.localStorage.setItem("learntube-quote-history", JSON.stringify(nextHistory));
-    setAnimationVariant(Math.floor(Math.random() * 8));
-    setColorVariant(Math.floor(Math.random() * 10));
+    setAnimationVariant(Math.floor(Math.random() * 16));
+    setColorVariant(Math.floor(Math.random() * 20));
     // Select one quote for this visit; it must not rotate while the overlay is open.
     setQuoteIndex(selectedQuote);
     const clock = window.setInterval(() => setNow(new Date()), 1000);
@@ -243,9 +337,12 @@ export default function Library() {
   }, [allItems, resourceItems]);
 
   const continueItem = useMemo(() => {
-    const id = visitedIds[0];
-    return allItems.find((item) => item.id === id) ?? resourceItems.find((item) => item.id === id);
-  }, [allItems, resourceItems, visitedIds]);
+    for (const id of visitedIds) {
+      const item = allItems.find((candidate) => candidate.id === id) ?? resourceItems.find((candidate) => candidate.id === id);
+      if (item && (progressById[id] ?? 0) < 100) return item;
+    }
+    return undefined;
+  }, [allItems, progressById, resourceItems, visitedIds]);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
