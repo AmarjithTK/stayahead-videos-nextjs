@@ -88,9 +88,13 @@ function nextDailyTime(date: Date, hour: number): Date {
 }
 
 function nextMonths(date: Date, months: number): Date {
-  const target = new Date(date);
-  target.setMonth(target.getMonth() + months);
-  return target;
+  const month = date.getMonth() + months;
+  const lastDay = new Date(date.getFullYear(), month + 1, 0).getDate();
+  return new Date(date.getFullYear(), month, Math.min(date.getDate(), lastDay));
+}
+
+function formatTargetDate(date: Date): string {
+  return date.toLocaleDateString([], { month: "long", day: "numeric" });
 }
 
 function nextYearMarker(date: Date): [string, Date] {
@@ -373,15 +377,15 @@ export default function Library() {
             </div>
             <p className="mt-10 text-sm font-medium text-zinc-400 sm:text-base">Click to continue</p>
           </div>
-          <div className="absolute bottom-6 left-6 flex gap-5 text-left text-xs text-zinc-400 sm:bottom-10 sm:left-10 sm:gap-8 sm:text-sm">
-            <span><strong className="block text-zinc-200">3 months</strong>{formatCountdown(nextMonths(now, 3).getTime() - now.getTime())}</span>
-            <span><strong className="block text-zinc-200">6 months</strong>{formatCountdown(nextMonths(now, 6).getTime() - now.getTime())}</span>
-          </div>
-          <div className="absolute bottom-6 right-6 text-right text-xs text-zinc-400 sm:bottom-10 sm:right-10 sm:text-sm">
-            <strong className="block text-zinc-200">{yearMarkerLabel}</strong>
-            <span>{formatCountdown(yearMarker.getTime() - (now?.getTime() ?? yearMarker.getTime()))}</span>
-            <strong className="mt-2 block text-zinc-200">Age {ageOnDate(now) + 1}</strong>
-            <span>{formatCountdown(nextBirthdayFrom(now).getTime() - now.getTime())}</span>
+          <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between text-left text-base text-zinc-300 sm:bottom-10 sm:left-10 sm:right-10 sm:text-lg">
+            <div className="flex gap-6 sm:gap-10">
+              <span><strong className="block text-zinc-100">3 months</strong>{formatTargetDate(nextMonths(now, 3))}</span>
+              <span><strong className="block text-zinc-100">6 months</strong>{formatTargetDate(nextMonths(now, 6))}</span>
+            </div>
+            <div className="grid grid-cols-2 gap-6 text-right sm:gap-10">
+              <span><strong className="block text-zinc-100">{yearMarkerLabel}</strong>{formatCountdown(yearMarker.getTime() - now.getTime())}</span>
+              <span><strong className="block text-zinc-100">Age {ageOnDate(now) + 1}</strong>{formatCountdown(nextBirthdayFrom(now).getTime() - now.getTime())}</span>
+            </div>
           </div>
         </div>
       )}
