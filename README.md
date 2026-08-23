@@ -1,4 +1,4 @@
-# Educational Playlists
+# Stayahead
 
 A landing page that curates YouTube educational video playlists so you can easily search, filter, and pick your next course. Built with [Next.js](https://nextjs.org) (App Router), TypeScript, and Tailwind CSS, and configured for static hosting on [Cloudflare Pages](https://pages.cloudflare.com).
 

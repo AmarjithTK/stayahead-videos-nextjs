@@ -295,7 +295,7 @@ export default function Library() {
             <span className="text-2xl text-zinc-800 dark:text-zinc-100" aria-hidden="true">&#9776;</span>
             <div className="flex items-center gap-1.5">
               <span className="flex h-6 w-9 items-center justify-center rounded-md bg-red-600 text-[10px] font-black text-white">&#9654;</span>
-              <span className="hidden text-xl font-bold tracking-[-0.08em] sm:inline">YouTube</span>
+              <span className="text-xl font-bold tracking-[-0.06em]">Stayahead</span>
             </div>
           </div>
           <div className="mx-auto flex w-full max-w-[680px]">
@@ -316,6 +316,12 @@ export default function Library() {
         <nav className="space-y-1 text-sm">
           {navItems.map(([key, label, path]) => <button key={key} type="button" onClick={() => switchTab(key)} className={`flex w-full items-center gap-5 rounded-lg px-3 py-2.5 text-left ${tab === key ? "bg-zinc-100 font-medium dark:bg-zinc-800" : "hover:bg-zinc-100 dark:hover:bg-zinc-800"}`}><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" className="h-5 w-5" aria-hidden="true"><path d={path} /></svg>{label}</button>)}
         </nav>
+        <a href="obsidian://open?vault=stayahead" className="mt-2 flex w-full items-center gap-5 rounded-lg px-3 py-2.5 text-sm hover:bg-zinc-100 dark:hover:bg-zinc-800">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" className="h-5 w-5 text-zinc-500" aria-hidden="true">
+            <path d="M3.5 5.5h5l1.5 2h6.5v7a1 1 0 0 1-1 1h-11a1 1 0 0 1-1-1v-9Z" />
+          </svg>
+          Obsidian
+        </a>
         <div className="my-4 border-t border-zinc-200 dark:border-zinc-800" />
         <p className="px-3 pb-2 text-xs font-semibold uppercase tracking-wide text-zinc-500">Explore</p>
         <nav className="space-y-1 text-sm">

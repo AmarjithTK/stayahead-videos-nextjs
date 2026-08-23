@@ -13,9 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Educational Playlists — Curated YouTube Learning",
+  title: "Stayahead — Learn Something Useful",
   description:
-    "Browse a curated collection of YouTube educational playlists covering programming, math, science, languages, and more. Search and filter to find your next course.",
+    "Stayahead is a focused library of courses, videos, and useful learning resources for building skills that compound.",
   icons: {
     icon: "/favicon.svg",
     shortcut: "/favicon.svg",
