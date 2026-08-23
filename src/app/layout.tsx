@@ -16,6 +16,11 @@ export const metadata: Metadata = {
   title: "Educational Playlists — Curated YouTube Learning",
   description:
     "Browse a curated collection of YouTube educational playlists covering programming, math, science, languages, and more. Search and filter to find your next course.",
+  icons: {
+    icon: "/favicon.svg",
+    shortcut: "/favicon.svg",
+    apple: "/favicon.svg",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

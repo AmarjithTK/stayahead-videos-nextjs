@@ -34,9 +34,20 @@ export interface VideoEntry {
   tags?: string[];
 }
 
+export interface ResourceEntry {
+  id: string;
+  title: string;
+  description: string;
+  category: PlaylistCategory;
+  url: string;
+  source: string;
+  tags?: string[];
+}
+
 export interface Library {
   playlists: PlaylistEntry[];
   videos: VideoEntry[];
+  resources: ResourceEntry[];
 }
 
 export const CATEGORY_LABELS: Record<PlaylistCategory, string> = {
@@ -56,6 +67,7 @@ const data = library as Library;
 
 export const playlists = data.playlists;
 export const videos = data.videos;
+export const resources = data.resources;
 
 export function thumbnailFor(videoId: string): string {
   return `https://i.ytimg.com/vi/${videoId}/mqdefault.jpg`;

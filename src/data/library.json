@@ -213,5 +213,124 @@
       "channel": "Code.org",
       "tags": ["hardware", "basics"]
     }
+  ],
+  "resources": [
+    {
+      "id": "ossu-computer-science",
+      "title": "Open Source Society University",
+      "description": "A complete, self-guided computer science education built from free university courses.",
+      "category": "programming",
+      "url": "https://github.com/ossu/computer-science",
+      "source": "GitHub / OSSU",
+      "tags": ["computer science", "curriculum", "courses"]
+    },
+    {
+      "id": "system-design-primer",
+      "title": "System Design Primer",
+      "description": "Learn how to design large-scale systems with practical examples and interview questions.",
+      "category": "programming",
+      "url": "https://github.com/donnemartin/system-design-primer",
+      "source": "GitHub / Donne Martin",
+      "tags": ["system design", "architecture", "interviews"]
+    },
+    {
+      "id": "roadmaps",
+      "title": "Developer Roadmaps",
+      "description": "Visual learning paths for frontend, backend, DevOps, data, AI, and many other roles.",
+      "category": "programming",
+      "url": "https://roadmap.sh/",
+      "source": "roadmap.sh",
+      "tags": ["roadmaps", "learning paths", "career"]
+    },
+    {
+      "id": "mdn-web-docs",
+      "title": "MDN Web Docs",
+      "description": "The reference and learning resource for HTML, CSS, JavaScript, and modern web APIs.",
+      "category": "web-development",
+      "url": "https://developer.mozilla.org/en-US/",
+      "source": "MDN",
+      "tags": ["html", "css", "javascript", "web"]
+    },
+    {
+      "id": "full-stack-open",
+      "title": "Full Stack Open",
+      "description": "A modern full-stack course covering React, Node.js, GraphQL, TypeScript, and testing.",
+      "category": "web-development",
+      "url": "https://fullstackopen.com/en/",
+      "source": "University of Helsinki",
+      "tags": ["react", "node", "full stack"]
+    },
+    {
+      "id": "geeksforgeeks",
+      "title": "GeeksforGeeks",
+      "description": "A broad reference for data structures, algorithms, programming languages, and interview practice.",
+      "category": "programming",
+      "url": "https://www.geeksforgeeks.org/",
+      "source": "GeeksforGeeks",
+      "tags": ["dsa", "algorithms", "interviews"]
+    },
+    {
+      "id": "leetcode",
+      "title": "LeetCode",
+      "description": "Practice coding problems, study plans, contests, and company-focused interview questions.",
+      "category": "programming",
+      "url": "https://leetcode.com/",
+      "source": "LeetCode",
+      "tags": ["dsa", "coding practice", "interviews"]
+    },
+    {
+      "id": "hackerrank",
+      "title": "HackerRank",
+      "description": "Structured practice tracks for algorithms, SQL, Python, JavaScript, and technical assessments.",
+      "category": "programming",
+      "url": "https://www.hackerrank.com/",
+      "source": "HackerRank",
+      "tags": ["coding practice", "sql", "certification"]
+    },
+    {
+      "id": "hackerearth",
+      "title": "HackerEarth",
+      "description": "Programming challenges, tutorials, and contests for building competitive coding skills.",
+      "category": "programming",
+      "url": "https://www.hackerearth.com/",
+      "source": "HackerEarth",
+      "tags": ["coding practice", "contests", "algorithms"]
+    },
+    {
+      "id": "cs50x",
+      "title": "CS50x",
+      "description": "Harvard's introduction to computer science, algorithms, abstraction, and programming.",
+      "category": "programming",
+      "url": "https://cs50.harvard.edu/x/",
+      "source": "Harvard / CS50",
+      "tags": ["computer science", "c", "python"]
+    },
+    {
+      "id": "refactoring-guru",
+      "title": "Refactoring.Guru",
+      "description": "Clear explanations and examples for design patterns, refactoring, and clean code.",
+      "category": "programming",
+      "url": "https://refactoring.guru/",
+      "source": "Refactoring.Guru",
+      "tags": ["design patterns", "clean code", "architecture"]
+    },
+    {
+      "id": "kaggle-learn",
+      "title": "Kaggle Learn",
+      "description": "Short, practical courses for Python, pandas, machine learning, SQL, and data visualization.",
+      "category": "data-science",
+      "url": "https://www.kaggle.com/learn",
+      "source": "Kaggle",
+      "tags": ["python", "machine learning", "data analysis"]
+    },
+    {
+      "id": "freecodecamp-curriculum",
+      "title": "freeCodeCamp Curriculum",
+      "description": "Free certifications and interactive practice across web development, data, and computer science.",
+      "category": "programming",
+      "url": "https://www.freecodecamp.org/learn/",
+      "source": "freeCodeCamp",
+      "tags": ["certification", "web", "javascript"]
+    }
   ]
 }

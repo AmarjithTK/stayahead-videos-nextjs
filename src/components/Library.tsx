@@ -1,27 +1,30 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import {
-  CATEGORY_LABELS,
-  playlists,
-  videos,
-  thumbnailFor,
-} from "@/data/library";
+import { CATEGORY_LABELS, playlists, resources, thumbnailFor, videos } from "@/data/library";
 import Card, { type CardItem } from "./Card";
+import ResourceCard, { type ResourceItem } from "./ResourceCard";
 
-type Tab = "playlists" | "videos" | "visited";
+type Tab = "playlists" | "videos" | "visited" | "resources";
 type Theme = "light" | "dark";
+
+const navItems: Array<[Tab, string, string]> = [
+  ["playlists", "Home", "M3 10.5 10 4l7 6.5v6a1 1 0 0 1-1 1h-3v-5H9v5H6a1 1 0 0 1-1-1v-6Z"],
+  ["videos", "Videos", "M5 4.5h10a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1Zm4 3v5l4-2.5-4-2.5Z"],
+  ["visited", "History", "M4 10a6 6 0 1 0 2-4.47M4 4v4h4"],
+  ["resources", "Resources", "M5 4.5h10a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1ZM7 8h6M7 11h4"],
+];
 
 export default function Library() {
   const [query, setQuery] = useState("");
-  const [activeCategory, setActiveCategory] = useState<string>("all");
+  const [activeCategory, setActiveCategory] = useState("all");
   const [tab, setTab] = useState<Tab>("playlists");
   const [visitedIds, setVisitedIds] = useState<string[]>([]);
   const [theme, setTheme] = useState<Theme>("light");
 
   useEffect(() => {
-    const saved = window.localStorage.getItem("learntube-theme");
-    const nextTheme: Theme = saved === "dark" ? "dark" : "light";
+    const savedTheme = window.localStorage.getItem("learntube-theme");
+    const nextTheme: Theme = savedTheme === "dark" ? "dark" : "light";
     // Apply the user's persisted preference after hydration.
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setTheme(nextTheme);
@@ -29,10 +32,10 @@ export default function Library() {
   }, []);
 
   useEffect(() => {
-    const saved = window.localStorage.getItem("learntube-visited");
-    if (!saved) return;
+    const savedVisits = window.localStorage.getItem("learntube-visited");
+    if (!savedVisits) return;
     try {
-      const ids = JSON.parse(saved);
+      const ids = JSON.parse(savedVisits);
       if (Array.isArray(ids)) {
         // eslint-disable-next-line react-hooks/set-state-in-effect
         setVisitedIds(ids.filter((id): id is string => typeof id === "string"));
@@ -42,66 +45,44 @@ export default function Library() {
     }
   }, []);
 
-  function toggleTheme() {
-    const nextTheme = theme === "light" ? "dark" : "light";
-    setTheme(nextTheme);
-    window.localStorage.setItem("learntube-theme", nextTheme);
-    document.documentElement.classList.toggle("dark", nextTheme === "dark");
-  }
+  const allItems = useMemo<CardItem[]>(() => [
+    ...playlists.map((item) => ({ kind: "playlists" as const, id: item.id, title: item.title, url: item.url, channel: item.channel, category: item.category, tags: item.tags ?? [], thumbnail: item.firstVideoId ? thumbnailFor(item.firstVideoId) : undefined })),
+    ...videos.map((item) => ({ kind: "videos" as const, id: item.id, title: item.title, url: item.url, channel: item.channel, category: item.category, tags: item.tags ?? [], thumbnail: thumbnailFor(item.videoId) })),
+  ], []);
 
-  const allItems = useMemo<CardItem[]>(
-    () => [
-      ...playlists.map((p) => ({
-        kind: "playlists" as const,
-        id: p.id,
-        title: p.title,
-        url: p.url,
-        channel: p.channel,
-        category: p.category,
-        tags: p.tags ?? [],
-        thumbnail: p.firstVideoId ? thumbnailFor(p.firstVideoId) : undefined,
-      })),
-      ...videos.map((v) => ({
-        kind: "videos" as const,
-        id: v.id,
-        title: v.title,
-        url: v.url,
-        channel: v.channel,
-        category: v.category,
-        tags: v.tags ?? [],
-        thumbnail: thumbnailFor(v.videoId),
-      })),
-    ],
-    [],
-  );
+  const resourceItems = useMemo<ResourceItem[]>(() => resources.map((item) => ({
+    kind: "resources" as const,
+    id: item.id,
+    title: item.title,
+    description: item.description,
+    category: item.category,
+    url: item.url,
+    source: item.source,
+    tags: item.tags ?? [],
+  })), []);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return allItems.filter((item) => {
-      if (tab === "visited" ? !visitedIds.includes(item.id) : item.kind !== tab) {
-        return false;
-      }
-      if (activeCategory !== "all" && item.category !== activeCategory) return false;
-      if (!q) return true;
-      return [item.title, item.channel, ...item.tags]
-        .join(" ")
-        .toLowerCase()
-        .includes(q);
+    const source = tab === "resources" ? resourceItems : allItems;
+    return source.filter((item) => {
+      const inTab = tab === "visited" ? visitedIds.includes(item.id) : tab === "resources" || item.kind === tab;
+      if (!inTab || (activeCategory !== "all" && item.category !== activeCategory)) return false;
+      const owner = item.kind === "resources" ? item.source : item.channel;
+      return !q || [item.title, owner, ...item.tags].join(" ").toLowerCase().includes(q);
     });
-  }, [allItems, query, activeCategory, tab, visitedIds]);
+  }, [activeCategory, allItems, query, resourceItems, tab, visitedIds]);
 
   const categoryChips = useMemo(() => {
-    const cats = new Set<string>();
-    for (const item of allItems) {
-      if (tab === "visited" ? visitedIds.includes(item.id) : item.kind === tab) {
-        cats.add(item.category);
-      }
-    }
-    return Array.from(cats);
-  }, [allItems, tab, visitedIds]);
+    const categories = new Set<string>();
+    const source = tab === "resources" ? resourceItems : allItems;
+    source.forEach((item) => {
+      if (tab === "visited" ? visitedIds.includes(item.id) : tab === "resources" || item.kind === tab) categories.add(item.category);
+    });
+    return Array.from(categories);
+  }, [allItems, resourceItems, tab, visitedIds]);
 
-  function switchTab(next: Tab) {
-    setTab(next);
+  function switchTab(nextTab: Tab) {
+    setTab(nextTab);
     setActiveCategory("all");
     setQuery("");
   }
@@ -114,57 +95,57 @@ export default function Library() {
     });
   }
 
+  function toggleTheme() {
+    const nextTheme = theme === "light" ? "dark" : "light";
+    setTheme(nextTheme);
+    window.localStorage.setItem("learntube-theme", nextTheme);
+    document.documentElement.classList.toggle("dark", nextTheme === "dark");
+  }
+
   return (
-    <main className="w-full flex-1 pb-16">
-      <header className="sticky top-0 z-10 border-b border-zinc-200/80 bg-zinc-50/90 backdrop-blur-md dark:border-zinc-800/80 dark:bg-zinc-950/90">
-        <div className="mx-auto flex w-full max-w-5xl flex-col items-center gap-4 px-4 py-5 sm:px-6">
-          <div className="flex w-full items-center justify-between">
-            <div className="flex items-center gap-2">
-              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-red-600 text-sm font-bold text-white">YT</span>
-              <span className="text-sm font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">LearnTube</span>
+    <main className="min-h-screen w-full bg-white text-zinc-900 dark:bg-[#0f0f0f] dark:text-zinc-100">
+      <header className="sticky top-0 z-30 h-14 border-b border-zinc-200 bg-white/95 backdrop-blur dark:border-zinc-800 dark:bg-[#0f0f0f]/95">
+        <div className="flex h-full items-center gap-4 px-4">
+          <div className="flex w-auto shrink-0 items-center gap-2 sm:w-52 sm:gap-4">
+            <span className="text-2xl text-zinc-800 dark:text-zinc-100" aria-hidden="true">&#9776;</span>
+            <div className="flex items-center gap-1.5">
+              <span className="flex h-6 w-9 items-center justify-center rounded-md bg-red-600 text-[10px] font-black text-white">&#9654;</span>
+              <span className="hidden text-xl font-bold tracking-[-0.08em] sm:inline">YouTube</span>
             </div>
-            <button type="button" onClick={toggleTheme} aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`} className="flex h-9 w-9 items-center justify-center rounded-full border border-zinc-200 text-zinc-600 transition hover:bg-zinc-100 dark:border-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-900">
-              {theme === "light" ? (
-                <svg viewBox="0 0 20 20" fill="currentColor" className="h-4 w-4" aria-hidden="true"><path d="M10 2.25a.75.75 0 0 1 .75.75v1a.75.75 0 0 1-1.5 0V3a.75.75 0 0 1 .75-.75ZM10 16a.75.75 0 0 1 .75.75v1a.75.75 0 0 1-1.5 0v-1A.75.75 0 0 1 10 16ZM17.75 10a.75.75 0 0 1-.75.75h-1a.75.75 0 0 1 0-1.5h1A.75.75 0 0 1 17.75 10ZM4 10a.75.75 0 0 1-.75.75h-1a.75.75 0 0 1 0-1.5h1A.75.75 0 0 1 4 10Zm11.303-5.303a.75.75 0 0 1 1.06 1.06l-.707.708a.75.75 0 1 1-1.06-1.061l.707-.707ZM5.404 14.596a.75.75 0 0 1 1.06 1.06l-.707.708a.75.75 0 0 1-1.06-1.061l.707-.707ZM15.657 15.657a.75.75 0 0 1-1.06 0l-.707-.708a.75.75 0 1 1 1.06-1.06l.707.707a.75.75 0 0 1 0 1.061ZM6.464 6.464a.75.75 0 0 1-1.06 0l-.707-.707a.75.75 0 1 1 1.06-1.06l.707.707a.75.75 0 0 1 0 1.06ZM10 6.25a3.75 3.75 0 1 0 0 7.5 3.75 3.75 0 0 0 0-7.5Z" /></svg>
-              ) : (
-                <svg viewBox="0 0 20 20" fill="currentColor" className="h-4 w-4" aria-hidden="true"><path d="M16.5 12.4A6.75 6.75 0 0 1 7.6 3.5a6.75 6.75 0 1 0 8.9 8.9Z" /></svg>
-              )}
-            </button>
           </div>
-          <div className="w-full max-w-2xl">
+          <div className="mx-auto flex w-full max-w-[680px]">
             <div className="relative flex-1">
-              <svg viewBox="0 0 20 20" fill="currentColor" className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-400" aria-hidden="true">
-                <path fillRule="evenodd" d="M9 3.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11ZM2 9a7 7 0 1 1 12.452 4.391l3.328 3.329a.75.75 0 1 1-1.06 1.06l-3.329-3.328A7 7 0 0 1 2 9Z" clipRule="evenodd" />
-              </svg>
-              <input type="search" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search courses, topics, or channels" className="w-full rounded-2xl border border-zinc-200 bg-white py-3 pl-10 pr-4 text-sm text-zinc-900 shadow-[0_2px_10px_rgba(0,0,0,0.04)] outline-none transition-colors placeholder:text-zinc-400 focus:border-red-500 focus:ring-4 focus:ring-red-500/10 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-50" />
+              <svg viewBox="0 0 20 20" fill="currentColor" className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-500" aria-hidden="true"><path fillRule="evenodd" d="M9 3.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11ZM2 9a7 7 0 1 1 12.452 4.391l3.328 3.329a.75.75 0 1 1-1.06 1.06l-3.329-3.328A7 7 0 0 1 2 9Z" clipRule="evenodd" /></svg>
+              <input type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search" className="h-10 w-full rounded-l-full border border-zinc-300 bg-white py-2 pl-11 pr-4 text-sm outline-none focus:border-blue-500 dark:border-zinc-700 dark:bg-[#121212]" />
             </div>
+            <button type="button" aria-label="Search" className="flex h-10 w-16 items-center justify-center rounded-r-full border border-l-0 border-zinc-300 bg-zinc-50 hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-800 dark:hover:bg-zinc-700"><svg viewBox="0 0 20 20" fill="currentColor" className="h-5 w-5" aria-hidden="true"><path fillRule="evenodd" d="M9 3.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11ZM2 9a7 7 0 1 1 12.452 4.391l3.328 3.329a.75.75 0 1 1-1.06 1.06l-3.329-3.328A7 7 0 0 1 2 9Z" clipRule="evenodd" /></svg></button>
           </div>
-          <div className="flex flex-wrap items-center justify-center gap-1.5">
-            {([ ["playlists", "Playlists"], ["videos", "Videos"], ["visited", "Previous visited"] ] as const).map(([key, label]) => (
-              <button key={key} type="button" onClick={() => switchTab(key)} className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${tab === key ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900" : "text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-900 dark:hover:text-zinc-100"}`}>{label}</button>
-            ))}
-            <span className="mx-2 h-4 w-px bg-zinc-200 dark:bg-zinc-800" />
-            <button type="button" onClick={() => setActiveCategory("all")} className={`rounded-full px-3 py-1.5 text-sm font-medium transition-colors ${activeCategory === "all" ? "bg-red-600 text-white" : "text-zinc-500 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-900"}`}>All</button>
-            {categoryChips.map((cat) => (
-              <button key={cat} type="button" onClick={() => setActiveCategory(cat)} className={`rounded-full px-3 py-1.5 text-sm font-medium transition-colors ${activeCategory === cat ? "bg-red-600 text-white" : "text-zinc-500 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-900"}`}>{CATEGORY_LABELS[cat as keyof typeof CATEGORY_LABELS]}</button>
-            ))}
+          <div className="ml-auto flex w-auto shrink-0 items-center justify-end gap-2 sm:w-52 sm:gap-3">
+            <button type="button" onClick={toggleTheme} aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`} className="rounded-full p-2 text-zinc-700 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800">{theme === "light" ? "☾" : "☀"}</button>
+            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 text-xs font-bold text-white">LT</span>
           </div>
         </div>
       </header>
 
-      {filtered.length > 0 ? (
-        <div className="mx-auto w-full max-w-5xl px-4 pt-8 sm:px-6">
-          <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
-            {filtered.map((item) => <Card key={`${item.kind}-${item.id}`} item={item} onVisit={() => markVisited(item.id)} />)}
-          </div>
-        </div>
-      ) : (
-        <div className="flex flex-col items-center gap-3 py-24 text-center">
-          <p className="text-lg font-medium text-zinc-700 dark:text-zinc-200">Nothing here</p>
-          <button type="button" onClick={() => { setQuery(""); setActiveCategory("all"); }} className="rounded-full bg-zinc-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-zinc-700 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200">Clear filters</button>
-        </div>
-      )}
+      <aside className="fixed bottom-0 left-0 top-14 z-20 hidden w-60 border-r border-zinc-200 bg-white px-3 py-3 dark:border-zinc-800 dark:bg-[#0f0f0f] lg:block">
+        <nav className="space-y-1 text-sm">
+          {navItems.map(([key, label, path]) => <button key={key} type="button" onClick={() => switchTab(key)} className={`flex w-full items-center gap-5 rounded-lg px-3 py-2.5 text-left ${tab === key ? "bg-zinc-100 font-medium dark:bg-zinc-800" : "hover:bg-zinc-100 dark:hover:bg-zinc-800"}`}><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" className="h-5 w-5" aria-hidden="true"><path d={path} /></svg>{label}</button>)}
+        </nav>
+        <div className="my-4 border-t border-zinc-200 dark:border-zinc-800" />
+        <p className="px-3 pb-2 text-xs font-semibold uppercase tracking-wide text-zinc-500">Explore</p>
+        <nav className="space-y-1 text-sm">
+          {categoryChips.map((category) => <button key={category} type="button" onClick={() => { setTab("resources"); setActiveCategory(category); }} className="flex w-full items-center gap-5 rounded-lg px-3 py-2.5 text-left hover:bg-zinc-100 dark:hover:bg-zinc-800"><span className="w-5 text-center text-zinc-500">&#8226;</span>{CATEGORY_LABELS[category as keyof typeof CATEGORY_LABELS]}</button>)}
+        </nav>
+      </aside>
 
+      <div className="border-b border-zinc-200 bg-white px-4 py-3 dark:border-zinc-800 dark:bg-[#0f0f0f] lg:ml-60">
+        <div className="flex gap-3 overflow-x-auto [scrollbar-width:none]">
+          {([ ["playlists", "Playlists"], ["videos", "Videos"], ["visited", "History"], ["resources", "Resources"] ] as const).map(([key, label]) => <button key={key} type="button" onClick={() => switchTab(key)} className={`shrink-0 rounded-lg px-3 py-1.5 text-sm font-medium ${tab === key ? "bg-zinc-900 text-white dark:bg-white dark:text-zinc-900" : "bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700"}`}>{label}</button>)}
+          {categoryChips.map((category) => <button key={category} type="button" onClick={() => setActiveCategory(category)} className={`shrink-0 rounded-lg px-3 py-1.5 text-sm font-medium ${activeCategory === category ? "bg-zinc-900 text-white dark:bg-white dark:text-zinc-900" : "bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700"}`}>{CATEGORY_LABELS[category as keyof typeof CATEGORY_LABELS]}</button>)}
+        </div>
+      </div>
+
+      {filtered.length > 0 ? <div className="mx-auto w-full max-w-[1640px] px-4 pt-6 sm:px-6 lg:ml-60 lg:w-[calc(100%-15rem)] lg:px-6 xl:px-8"><div className={tab === "resources" ? "grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6" : "grid grid-cols-1 gap-x-5 gap-y-9 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"}>{filtered.map((item) => item.kind === "resources" ? <ResourceCard key={`resource-${item.id}`} item={item} onVisit={() => markVisited(item.id)} /> : <Card key={`${item.kind}-${item.id}`} item={item} onVisit={() => markVisited(item.id)} />)}</div></div> : <div className="flex flex-col items-center gap-3 py-24 text-center"><p className="text-lg font-medium">Nothing here</p><button type="button" onClick={() => { setQuery(""); setActiveCategory("all"); }} className="rounded-full bg-zinc-900 px-4 py-2 text-sm font-medium text-white dark:bg-zinc-100 dark:text-zinc-900">Clear filters</button></div>}
     </main>
   );
 }

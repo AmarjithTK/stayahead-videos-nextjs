@@ -22,16 +22,16 @@ export default function Card({ item, onVisit }: { item: CardItem; onVisit?: () =
       onClick={onVisit}
       target="_blank"
       rel="noopener noreferrer"
-      className="group flex flex-col overflow-hidden rounded-xl transition-transform duration-200 hover:-translate-y-1"
+      className="group flex min-w-0 flex-col"
     >
-      <div className="relative aspect-video w-full overflow-hidden rounded-xl bg-zinc-200 dark:bg-zinc-800">
+      <div className="relative aspect-video w-full overflow-hidden rounded-xl bg-zinc-200 shadow-sm transition group-hover:rounded-xl dark:bg-zinc-800">
         {item.thumbnail ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={item.thumbnail}
             alt=""
             loading="lazy"
-            className="h-full w-full object-cover"
+            className="h-full w-full object-cover transition duration-200 group-hover:brightness-75"
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center">
@@ -45,17 +45,18 @@ export default function Card({ item, onVisit }: { item: CardItem; onVisit?: () =
             </svg>
           </div>
         )}
-        <span className="absolute bottom-2 right-2 rounded-md bg-black/80 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-white">
+        <span className="absolute bottom-2 right-2 rounded bg-black/80 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-white">
           {item.kind === "playlists" ? "Playlist" : "Video"}
         </span>
       </div>
-      <div className="flex flex-col gap-0.5 px-1 pt-2">
-        <h3 className="line-clamp-2 text-sm font-medium leading-snug text-zinc-900 dark:text-zinc-50">
-          {item.title}
-        </h3>
-        <span className="truncate text-xs text-zinc-400 dark:text-zinc-500">
-          {item.channel}
-        </span>
+      <div className="flex gap-3 pt-3">
+        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-zinc-800 text-xs font-bold uppercase text-white dark:bg-zinc-700">{item.channel.slice(0, 1)}</span>
+        <div className="min-w-0 flex-1">
+          <h3 className="line-clamp-2 text-[15px] font-semibold leading-snug text-zinc-900 dark:text-zinc-50">{item.title}</h3>
+          <span className="mt-1 block truncate text-[13px] text-zinc-500 dark:text-zinc-400">{item.channel}</span>
+          <span className="mt-0.5 block text-xs capitalize text-zinc-500 dark:text-zinc-500">{item.category.replace("-", " ")}</span>
+        </div>
+        <span className="pt-0.5 text-lg leading-none text-zinc-500 opacity-0 transition group-hover:opacity-100" aria-hidden="true">⋮</span>
       </div>
     </a>
   );
