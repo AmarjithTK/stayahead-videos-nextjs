@@ -15,10 +15,11 @@ interface CardItem {
 
 export type { CardItem };
 
-export default function Card({ item }: { item: CardItem }) {
+export default function Card({ item, onVisit }: { item: CardItem; onVisit?: () => void }) {
   return (
     <a
       href={item.url}
+      onClick={onVisit}
       target="_blank"
       rel="noopener noreferrer"
       className="group flex flex-col overflow-hidden rounded-xl transition-transform duration-200 hover:-translate-y-1"
@@ -33,7 +34,7 @@ export default function Card({ item }: { item: CardItem }) {
             className="h-full w-full object-cover"
           />
         ) : (
-            <div className="flex h-full w-full items-center justify-center">
+          <div className="flex h-full w-full items-center justify-center">
             <svg
               viewBox="0 0 24 24"
               fill="currentColor"

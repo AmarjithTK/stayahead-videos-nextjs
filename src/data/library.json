@@ -1,6 +1,96 @@
 {
   "playlists": [
     {
+      "id": "apna-college-dsa",
+      "title": "Complete C++ DSA Course",
+      "category": "programming",
+      "url": "https://www.youtube.com/playlist?list=PLfqMhTWNBTe137I_EPQd34TsgV6IO55pt",
+      "firstVideoId": "VTLCoHnyACE",
+      "channel": "Apna College",
+      "featured": true,
+      "tags": ["dsa", "data structures", "algorithms", "c++", "placements"]
+    },
+    {
+      "id": "striver-dsa-a2z",
+      "title": "Striver's A2Z DSA Course",
+      "category": "programming",
+      "url": "https://www.youtube.com/playlist?list=PLgUwDviBIf0oF6QL8m22w1hIDC1vJ_BHz",
+      "firstVideoId": "0bHoB32fuj0",
+      "channel": "take U forward",
+      "featured": true,
+      "tags": ["dsa", "data structures", "algorithms", "placements", "interview"]
+    },
+    {
+      "id": "graphs-shradha-khapra",
+      "title": "Graphs - Data Structure & Algorithms",
+      "category": "programming",
+      "url": "https://www.youtube.com/playlist?list=PLGjplNEQ1it-0w_PkFtKzH0ZExo6Lvm6R",
+      "firstVideoId": "RpgyCJBbl5E",
+      "channel": "Shradha Khapra",
+      "featured": true,
+      "tags": ["graphs", "data structures", "algorithms", "dsa", "placements"]
+    },
+    {
+      "id": "neso-analog-electronics",
+      "title": "Analog Electronics",
+      "category": "other",
+      "url": "https://www.youtube.com/playlist?list=PLBlnK6fEyqRiw-GZRqfnlVIBz9dxrqHJS",
+      "firstVideoId": "7jaa1rlW7Ak",
+      "channel": "Neso Academy",
+      "featured": true,
+      "tags": ["electronics", "analog", "circuits", "transistors", "diodes"]
+    },
+    {
+      "id": "neso-digital-electronics",
+      "title": "Digital Electronics",
+      "category": "other",
+      "url": "https://www.youtube.com/playlist?list=PLBlnK6fEyqRjMH3mWf6kwqiTbT798eAOm",
+      "firstVideoId": "M0mx8S05v60",
+      "channel": "Neso Academy",
+      "featured": true,
+      "tags": ["electronics", "digital", "logic gates", "boolean algebra", "flip flops"]
+    },
+    {
+      "id": "neso-electronics-projects",
+      "title": "Electronics Projects",
+      "category": "other",
+      "url": "https://www.youtube.com/playlist?list=PLBlnK6fEyqRjdudUOryWImOBdzxg6ZGk5",
+      "firstVideoId": "gzh8ICLMXzQ",
+      "channel": "Neso Academy",
+      "featured": true,
+      "tags": ["electronics", "projects", "circuits", "components", "hardware"]
+    },
+    {
+      "id": "neso-network-theory",
+      "title": "Network Theory",
+      "category": "other",
+      "url": "https://www.youtube.com/playlist?list=PLBlnK6fEyqRgLR-hMp7wem-bdVN1iEhsh",
+      "firstVideoId": "NEhH6C7Fzw4",
+      "channel": "Neso Academy",
+      "featured": true,
+      "tags": ["electronics", "network theory", "circuits", "electrical engineering"]
+    },
+    {
+      "id": "phils-lab-pcb-design",
+      "title": "PCB Design",
+      "category": "design",
+      "url": "https://www.youtube.com/playlist?list=PLXSyc11qLa1b9VA7nw8-DiLRXVhZ2iUN2",
+      "firstVideoId": "PMEpQZ90f34",
+      "channel": "Phil's Lab",
+      "featured": true,
+      "tags": ["pcb", "electronics", "hardware", "kicad", "altium"]
+    },
+    {
+      "id": "robert-feranec-board-design",
+      "title": "How to Design & Build Your Own Boards",
+      "category": "design",
+      "url": "https://www.youtube.com/playlist?list=PLXvLToQzgzdehgGIB_mJdwagVTa91w8_s",
+      "firstVideoId": "S_p0YV-JlfU",
+      "channel": "Robert Feranec",
+      "featured": true,
+      "tags": ["pcb", "hardware", "board design", "altium", "electronics"]
+    },
+    {
       "id": "learn-javascript",
       "title": "Learn JavaScript – Full Course for Beginners",
       "category": "programming",
