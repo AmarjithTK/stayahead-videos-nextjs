@@ -1,0 +1,8 @@
+# Cloudflare Pages configuration
+# Docs: https://developers.cloudflare.com/pages/functions/wrangler-configuration/
+
+name = "youtube-playlists"
+compatibility_date = "2026-08-23"
+
+# Static export output directory produced by `next build` (output: "export").
+pages_build_output_dir = "out"

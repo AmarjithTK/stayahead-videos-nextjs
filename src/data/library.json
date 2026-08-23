@@ -1,0 +1,127 @@
+{
+  "playlists": [
+    {
+      "id": "learn-javascript",
+      "title": "Learn JavaScript – Full Course for Beginners",
+      "category": "programming",
+      "url": "https://www.youtube.com/playlist?list=PLWKjhJtqVAbk2qRZtWSzCIN38JC_NdhW5",
+      "firstVideoId": "le-URjBhevE",
+      "channel": "freeCodeCamp.org",
+      "featured": true,
+      "tags": ["javascript", "js", "beginner", "web"]
+    },
+    {
+      "id": "learn-python",
+      "title": "Learn Python – Full Course for Beginners",
+      "category": "programming",
+      "url": "https://www.youtube.com/playlist?list=PLWKjhJtqVAbnqBxcdjVGgT3uVR10bzTEB",
+      "firstVideoId": "eWRfhZUzrAc",
+      "channel": "freeCodeCamp.org",
+      "featured": true,
+      "tags": ["python", "beginner", "scripting"]
+    },
+    {
+      "id": "html-css-basics",
+      "title": "HTML & CSS Crash Course",
+      "category": "web-development",
+      "url": "https://www.youtube.com/playlist?list=PLillGF-RfqbZTASqIqdvm1R5mLrQq79CU",
+      "firstVideoId": "UB1O30fR-EE",
+      "channel": "Traversy Media",
+      "tags": ["html", "css", "frontend", "beginner"]
+    },
+    {
+      "id": "react-beginners",
+      "title": "React for Beginners",
+      "category": "web-development",
+      "url": "https://www.youtube.com/playlist?list=PLWKjhJtqVAbkArDMazoARtNz1aMwNWmvC",
+      "firstVideoId": "DLX62G4lc44",
+      "channel": "freeCodeCamp.org",
+      "tags": ["react", "javascript", "frontend", "hooks"]
+    },
+    {
+      "id": "machine-learning-intro",
+      "title": "Introduction to Machine Learning",
+      "category": "data-science",
+      "url": "https://www.youtube.com/playlist?list=PLWKjhJtqVAblStefaz_YOVpDWqcRScc2s",
+      "firstVideoId": "i_LwzRVP7bg",
+      "channel": "freeCodeCamp.org",
+      "featured": true,
+      "tags": ["ml", "ai", "neural networks"]
+    },
+    {
+      "id": "linear-algebra",
+      "title": "Essence of Linear Algebra",
+      "category": "mathematics",
+      "url": "https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab",
+      "firstVideoId": "fNk_zzaMoSs",
+      "channel": "3Blue1Brown",
+      "featured": true,
+      "tags": ["algebra", "vectors", "matrices"]
+    },
+    {
+      "id": "calculus-series",
+      "title": "Calculus Explained Simply",
+      "category": "mathematics",
+      "url": "https://www.youtube.com/playlist?list=PLZHQObOWTQDMsr9K-rj53DwVRMYO3t5Yr",
+      "firstVideoId": "WUvTyaaNkzM",
+      "channel": "3Blue1Brown",
+      "tags": ["calculus", "derivatives", "integrals"]
+    },
+    {
+      "id": "physics-fundamentals",
+      "title": "Physics Fundamentals",
+      "category": "science",
+      "url": "https://www.youtube.com/playlist?list=PL8dPuuaLjXtN0ge7yDk_UA0ldZJdhwkoV",
+      "firstVideoId": "OoO5d5P0Jn4",
+      "channel": "CrashCourse",
+      "tags": ["physics", "mechanics", "science"]
+    },
+    {
+      "id": "chemistry-basics",
+      "title": "Chemistry Basics",
+      "category": "science",
+      "url": "https://www.youtube.com/playlist?list=PL8dPuuaLjXtPHzzYuWy6fYEaX9mQQ8oGr",
+      "firstVideoId": "FSyAehMdpyI",
+      "channel": "CrashCourse",
+      "tags": ["chemistry", "atoms", "reactions"]
+    }
+  ],
+  "videos": [
+    {
+      "id": "sql-data-analysis",
+      "title": "SQL Tutorial - Full Database Course",
+      "category": "data-science",
+      "url": "https://www.youtube.com/watch?v=HXV3zeQKqGY",
+      "videoId": "HXV3zeQKqGY",
+      "channel": "freeCodeCamp.org",
+      "tags": ["sql", "database", "analytics"]
+    },
+    {
+      "id": "big-O-explained",
+      "title": "Big O Notation - Full Course",
+      "category": "programming",
+      "url": "https://www.youtube.com/watch?v=vZEiMD77UPc",
+      "videoId": "vZEiMD77UPc",
+      "channel": "freeCodeCamp.org",
+      "tags": ["algorithms", "complexity", "interview"]
+    },
+    {
+      "id": "git-for-professionals",
+      "title": "Git for Professionals",
+      "category": "career",
+      "url": "https://www.youtube.com/watch?v=Uszj_k0DGsg",
+      "videoId": "Uszj_k0DGsg",
+      "channel": "freeCodeCamp.org",
+      "tags": ["git", "version control"]
+    },
+    {
+      "id": "how-computers-work",
+      "title": "How Computers Work",
+      "category": "career",
+      "url": "https://www.youtube.com/watch?v=cNN_tTXABUA",
+      "videoId": "cNN_tTXABUA",
+      "channel": "Code.org",
+      "tags": ["hardware", "basics"]
+    }
+  ]
+}
